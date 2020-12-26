@@ -12,7 +12,6 @@
 //     });
 // }
 
-
 function showResults() {
     var name = document.getElementById("try").value;
     //alert(name);
@@ -20,8 +19,11 @@ function showResults() {
         url: `http://openlibrary.org/search.json?title=${name}`,
         type: 'GET',
         //data: user,
-        success: function (name) {
-            alert(name);
+        success: function (res) {
+            window.location.replace('./book.html');
+            document.getElementById("details").innerHTML = res.docs[0].title;
+            
+            //alert(res.docs[0].title);
         }
     });
 }
