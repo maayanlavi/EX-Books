@@ -40,11 +40,13 @@
               </ul>
             </nav>
             <div class="search">
-              <input type="text" class="searchTerm" placeholder="book name...">
-              <button type="submit" class="searchButton">
+              <form>
+              <input type="text" class="searchTerm" placeholder="book name..." id="try">
+              <button type="button" onclick="showResults();" class="searchButton">
                 <i id="button" class="fa fa-search"></i>
              </button>
-           </div>   
+             </form>
+           </div>    
           </div>           
         </div>    
       </div>
@@ -71,13 +73,13 @@
                 <input type="email" id="contact_email" class="form-control" placeholder="BOOK NAME" />
               </div> -->
               <div class="form-group">
-                <input type="text" id="contact_subject" class="form-control" placeholder="STARS (1-5)" />
+                <input type="number" id="contact_subject" min="1" max="5" class="form-control" placeholder="STARS" />
               </div>
               <div class="form-group">
                 <textarea id="contact_message" class="form-control" rows="6" placeholder="INFO"></textarea>
               </div>
               <div class="form-group">
-                <button class="tm-more-button" type="submit" name="submit">Send</button> 
+                <button class="tm-more-button" onclick="addReview()" type="submit" name="submit">Send</button> 
               </div>               
             </div>
           </form>

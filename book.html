@@ -38,7 +38,15 @@
                 <li><a href="#">Wish List</a></li>
                 <li><a href="#">My History</a></li>
               </ul>
-            </nav>   
+            </nav>
+            <div class="search">
+              <form>
+              <input type="text" class="searchTerm" placeholder="book name..." id="try">
+              <button type="button" onclick="showResults();" class="searchButton">
+                <i id="button" class="fa fa-search"></i>
+             </button>
+             </form>
+           </div>    
           </div>           
         </div>    
       </div>
@@ -61,17 +69,23 @@
                 <img src="img/menu-1.jpg" alt="Product" id="bookCover">
                 <div class="tm-product-text">
                   <h3 class="tm-product-title" id="bookTitle">Book Name</h3>
-                  <h4 class="tm-product-title" id="authors">Authors</h4>
-                  <p class="tm-product-description" id="bookDescription">details</p>
-                  
-                  <div class="tm-product-description">All reviews:
-                    <div id="reviews"></div>
-                  </div>
+                  <h4 class="tm-product-title" id="authors">Author</h4>
 
-                </div>
-                <div class="tm-product-price">
-                  <a href="addReview.html" id="addRev"class="tm-product-price-link tm-handwriting-font">add a review</a>
-                </div>
+                  <h3 class="tm-product-description"><b>All reviews:</b>
+                    <div id="reviews"></div>
+                  </h3>
+
+                  <ul class="gradient-list">
+                    <li>&#9733 &#9733 &#9733 &#9733 <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                    <li>&#9733 &#9733 <br> Aenean tincidunt elit at ipsum cursus, vitae interdum nulla suscipit.</li>
+                    <li>&#9733 &#9733 &#9733 <br> Curabitur in orci vel risus facilisis accumsan.</li>
+                    <li>&#9733 &#9733 &#9733 &#9733 &#9733 <br>Morbi eleifend tortor lacinia sapien sagittis, quis pellentesque felis egestas.</li>
+                    <li>&#9733 <br> Aenean viverra dui quis leo lacinia fringilla.</li>
+                  </ul>
+
+                </div   >
+                  <a href="addReview.html" class="tm-more-button tm-more-button-welcome">add a review</a>      
+                  <a href="#" onclick="addToMyBooks()" class="tm-more-button tm-more-button-welcome">add to My Books</a>      
               </div>
             </div>
           </div>          

@@ -41,10 +41,12 @@
                   </ul>
             </nav>
             <div class="search">
-              <input type="text" class="searchTerm" placeholder="book name...">
-              <button type="submit" class="searchButton">
+              <form>
+              <input type="text" class="searchTerm" placeholder="book name..." id="try">
+              <button type="button" onclick="showResults();" class="searchButton">
                 <i id="button" class="fa fa-search"></i>
              </button>
+             </form>
            </div>   
           </div>           
         </div>    
@@ -60,10 +62,10 @@
               <img src="img/popular-1.jpg" alt="Popular" class="tm-popular-item-img">
               <div class="tm-popular-item-description">
                 <h3 class="tm-handwriting-font tm-popular-item-title">book name</h3><hr class="tm-popular-item-hr">
-                <p>book details</p>
-                <div class="order-now-container">
-                  <a href="addReview.html" class="order-now-link tm-handwriting-font">edit review</a>
-                </div>
+                <p id="myRev">my review</p>
+                <a href="#main" class="tm-more-button tm-more-button-welcome">edit review</a>
+                <a href="#main" class="tm-more-button tm-more-button-welcome">delete review</a> 
+                <a href="#main" class="tm-more-button tm-more-button-welcome">delete book</a>     
               </div>              
             </div>
           </div>          
