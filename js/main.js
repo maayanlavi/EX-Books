@@ -35,29 +35,70 @@ function showResults() {
     });
 }
 
-
+function loadAddReviewPage()
+{
+    //we use this function to navigate to the 'addReview.html'
+    //page and set the query string to contain the book id
+    //this way we can read the querystring in javascript code in the function 'addReview()'
+    //and make sure the correct book id is sent to the server
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    window.location.href = `addReview.html?bookId=${bookId}`
+}
 
 function addReview() {
-    //TODO - here we need to pass the user ID & book ID to the server and do "POST" to review with him
+    //build the body for the request
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+
+    let review = {
+        book_id: bookId,
+        stars: $('#stars').val(),
+        text: $('#text').val()
+    }
+    
+
     $.ajax({
-    //  url:        link from moriel
+        url:`http://localhost:3000/api/reviews`,       //chance the path to the heroku after upload it.
         type: 'POST',
+        data:review,
         success: function (review) {
-            createReview(review);
+            console.log(review);
+            window.location.href=`/book.html?bookId=${bookId}` //return to bookpage after posting review
         }
     });
 }
 
-function createReview(review) {
-    // TODO- Here we need that the review will add to "book" page 
-    // and the book will add to "all book" page
-}
-
 
 function addToMyBooks(){
-    //TODO-here we need that the book will add to "user (my) book"
-    alert("Added Successfully!")
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    let book = { id: bookId }
+    console.log(book)
+    $.ajax({
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
+        data: book,
+        type: 'POST',
+        success: function (res) {
+            console.log(res)
+            alert("Added Successfully!");
+        }
+    })
 }
 
+//function getBookReviews()
+
+// function updateReview(){} - note: show "update-review button" only if the user is whom wrote it.
 
 
+// function AllBooksInSystem(){}
+
+// function getUserBooks(){}
+
+
+//simulate login:
+function login() {
+    window.localStorage.setItem('user_id', '5fe7601e77765782e215f29d')
+}
+
+login();

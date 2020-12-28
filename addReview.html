@@ -64,7 +64,9 @@
       <div class="container" id="main">
         <section class="tm-section row">
           <h2 class="col-lg-12 margin-bottom-30">Add a review</h2>
-          <form action="#" method="post" class="tm-contact-form">
+          
+          <!-- remove method from form, because javascript posts to server -->
+          <form action='#' class="tm-contact-form">
             <div class="col-lg-6 col-md-6">
               <!-- <div class="form-group">
                 <input type="text" id="contact_name" class="form-control" placeholder="NAME" />
@@ -73,13 +75,13 @@
                 <input type="email" id="contact_email" class="form-control" placeholder="BOOK NAME" />
               </div> -->
               <div class="form-group">
-                <input type="number" id="contact_subject" min="1" max="5" class="form-control" placeholder="STARS" />
+                <input type="number" id="stars" min="1" max="5" class="form-control" placeholder="STARS" />
               </div>
               <div class="form-group">
-                <textarea id="contact_message" class="form-control" rows="6" placeholder="INFO"></textarea>
+                <textarea id="text" class="form-control" rows="6" placeholder="INFO"></textarea>
               </div>
               <div class="form-group">
-                <button class="tm-more-button" onclick="addReview()" type="submit" name="submit">Send</button> 
+                <button class="tm-more-button" onclick="addReview()" type="button" >Send</button> 
               </div>               
             </div>
           </form>
