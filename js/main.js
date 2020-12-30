@@ -84,10 +84,9 @@ function addToMyBooks(){
     })
 }
 
-function deleteReview(){
+function deleteReview(){    //TODO
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
-    //let book = { id: bookId }
     $.ajax({
         //url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`, 
         //data: book,
@@ -99,10 +98,9 @@ function deleteReview(){
     })
 }
 
-function deleteBook(){
+function deleteBook(){  //TODO
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
-    //let book = { id: bookId }
     $.ajax({
         //url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
         //data: book,
@@ -132,68 +130,83 @@ function getBookReviews() {
                 document.getElementById("reviews").innerHTML += '<br>';
                 document.getElementById("reviews").innerHTML += reviews[i].text;
                 document.getElementById("reviews").innerHTML +='</li>'
+                if (reviews[i].user_id ==  window.localStorage.getItem('user_id'))
+                    document.getElementById("reviews").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
+                    '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</button>';
+
             }
         }
     })
 }
 
-function updateReview(){ //TODO
+function updateReview()
+{
+    //build the body for the request
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
 
+    let review = {
+        book_id: bookId,
+        stars: $('#stars').val(),
+        text: $('#text').val()
+    }
+
+    $.ajax({
+        url:`http://localhost:3000/api/reviews?book_id=${bookId}`,       //change the path to the heroku after upload it.
+        type: 'PUT',
+        data:review,
+        success: function (review) {
+            console.log(review);
+            window.location.href=`/book.html?bookId=${bookId}` //return to bookpage after posting review
+        }
+    });
 }
 
-function AllBooksInSystem(){}  {    //TODO
+function AllBooksInSystem() {
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}`,
+        url: 'http://localhost:3000/api/books',
         type: 'GET',
         success: function (books) {
-            const num=books.length;
+            const num= books.length;
             for (let i=0; i<num; ++i)
-            {        
-                $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${books[i].covers[0]}-M.jpg`)        
+            {   
+                document.getElementById("bookName").innerHTML += `<img src='${books[i].cover}' alt="Popular" class="tm-popular-item-img">`;
+                document.getElementById("bookName").innerHTML += '<br>';
                 document.getElementById("bookName").innerHTML += books[i].name;
+                document.getElementById("bookName").innerHTML += '<br>';
+                document.getElementById("bookName").innerHTML += `<a href='${books[i].link}' class="tm-more-button tm-more-button-welcome">Book page</a>`;
             }
+
         }
+
     })
 }
 
- function getUserBooks() { //TODO
+ function getUserBooks() { 
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}`,
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
         type: 'GET',
-        success: function (res) {
-            console.log(res.books[3]);
-            const num=res.books.length;
+        success: function (books) {
+            const num= books.length;
+            
             for (let i=0; i<num; ++i)
             {   
-                console.log(res.books[i]);
-            //     $.ajax({
-            //         url: `http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`,
-            //         type: 'GET',
-            //         success: function (res) {
-            //             $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`)        
-            // }
-            //     })
-                // document.getElementById("bookName").innerHTML += user.books[i];
-                // document.getElementById("options").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
-                // '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
-                // '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
-            }
-        
+                document.getElementById("bookName").innerHTML += `<img src='${books[i].cover}' alt="Popular" class="tm-popular-item-img">`;
+                document.getElementById("bookName").innerHTML += '<br>';
+                document.getElementById("bookName").innerHTML += books[i].name;
+                document.getElementById("bookName").innerHTML += '<br>';
 
-            // $.ajax({
-            //     url: `http://openlibrary.org${res.authors[0].author.key}.json`,
-            //     type: 'GET',
-            //     success: function (res) {
-            //         $('#authors').text(res.name)
-            //     }
-            // })
-            // $('#bookCover').attr('src',`http://covers.openlibrary.org/b/id/${res.covers[0]}-M.jpg`)
+                document.getElementById("bookName").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
+                '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</button>' + 
+                '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</button>'; 
+            }
+
         }
 
     })
