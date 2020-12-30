@@ -84,27 +84,6 @@ function addToMyBooks(){
     })
 }
 
-// function addToMyBooks(){
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const bookId = urlParams.get('bookId');
-//     let book = { id: bookId }
-//     console.log(book)
-//     $.ajax({
-//         url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
-//         data: book,
-//         type: 'POST',
-//         success: function (res) {
-//             console.log(res)
-//             alert("Added Successfully!");
-//             $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${res.covers[0]}-M.jpg`)        
-//             document.getElementById("bookName").innerHTML += res.name;
-//             document.getElementById("options").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
-//             '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
-//             '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
-//         }
-//     })
-// }
-
 function deleteReview(){
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
@@ -135,7 +114,7 @@ function deleteBook(){
     })
 }
 
-function getBookReviews() { //maayan
+function getBookReviews() { 
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
 
@@ -146,7 +125,6 @@ function getBookReviews() { //maayan
             console.log(reviews);
             const num=reviews.length;
             for (let i=0; i<num; ++i) {
-                console.log("maayan");
                 document.getElementById("reviews").innerHTML += '<li>';
                 for (let j=0; j<reviews[i].stars; ++j)
                     document.getElementById("reviews").innerHTML += '&#9733 ';
@@ -159,9 +137,11 @@ function getBookReviews() { //maayan
     })
 }
 
-// function updateReview(){} - note: show "update-review button" only if the user is whom wrote it. Dana
+function updateReview(){ //TODO
 
-function AllBooksInSystem(){}  {
+}
+
+function AllBooksInSystem(){}  {    //TODO
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
@@ -179,7 +159,7 @@ function AllBooksInSystem(){}  {
     })
 }
 
- function getUserBooks() { //maayan
+ function getUserBooks() { //TODO
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
@@ -191,7 +171,7 @@ function AllBooksInSystem(){}  {
             const num=res.books.length;
             for (let i=0; i<num; ++i)
             {   
-                console.log(books[i]);
+                console.log(res.books[i]);
             //     $.ajax({
             //         url: `http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`,
             //         type: 'GET',
