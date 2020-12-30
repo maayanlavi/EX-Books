@@ -184,25 +184,19 @@ function AllBooksInSystem(){}  {
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}`,
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
         type: 'GET',
-        success: function (res) {
-            console.log(res.books[3]);
-            const num=res.books.length;
+        success: function (books) {
+            const num= books.length;
+            
+            for (let i = 0; i < num; )
             for (let i=0; i<num; ++i)
             {   
-                console.log(books[i]);
-            //     $.ajax({
-            //         url: `http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`,
-            //         type: 'GET',
-            //         success: function (res) {
-            //             $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`)        
-            // }
-            //     })
-                // document.getElementById("bookName").innerHTML += user.books[i];
-                // document.getElementById("options").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
-                // '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
-                // '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
+                
+                document.getElementById("bookName").innerHTML += user.books[i];
+                document.getElementById("options").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
+                '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
+                '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
             }
         
 
