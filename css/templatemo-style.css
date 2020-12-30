@@ -511,3 +511,8 @@ li {
   padding: 12px 0;
   box-sizing: border-box;
 }
+
+#reviews {
+  color:black;
+  text-align: center;
+}

@@ -37,7 +37,6 @@ function showResults() {
 
 function loadAddReviewPage()
 {
-    
     //we use this function to navigate to the 'addReview.html'
     //page and set the query string to contain the book id
     //this way we can read the querystring in javascript code in the function 'addReview()'
@@ -57,7 +56,6 @@ function addReview() {
         stars: $('#stars').val(),
         text: $('#text').val()
     }
-    
 
     $.ajax({
         url:`http://localhost:3000/api/reviews`,       //change the path to the heroku after upload it.
@@ -69,7 +67,6 @@ function addReview() {
         }
     });
 }
-
 
 function addToMyBooks(){
     const urlParams = new URLSearchParams(window.location.search);
@@ -87,26 +84,76 @@ function addToMyBooks(){
     })
 }
 
+// function addToMyBooks(){
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const bookId = urlParams.get('bookId');
+//     let book = { id: bookId }
+//     console.log(book)
+//     $.ajax({
+//         url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
+//         data: book,
+//         type: 'POST',
+//         success: function (res) {
+//             console.log(res)
+//             alert("Added Successfully!");
+//             $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${res.covers[0]}-M.jpg`)        
+//             document.getElementById("bookName").innerHTML += res.name;
+//             document.getElementById("options").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
+//             '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
+//             '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
+//         }
+//     })
+// }
+
+function deleteReview(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    //let book = { id: bookId }
+    $.ajax({
+        //url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`, 
+        //data: book,
+        type: 'DELETE',
+        success: function (res) {
+            alert("Deleted Successfully!");
+            window.location.replace('/myBooks.html');
+        }
+    })
+}
+
+function deleteBook(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    //let book = { id: bookId }
+    $.ajax({
+        //url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
+        //data: book,
+        type: 'DELETE',
+        success: function (res) {
+            console.log(res)
+            window.location.replace('/myBooks.html');
+        }
+    })
+}
+
 function getBookReviews() { //maayan
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
-    let book = { id: bookId }
-    let theReviews=document.getElementsByClassName("gradient-list");
+
     $.ajax({
         url: `http://localhost:3000/api/reviews?book_id=${bookId}`,
-        data: book,
         type: 'GET',
         success: function (reviews) {
-            const num=review.length();
-            for (let i=0; i<num; ++i)
-                document.getElementsByClassName("gradient-list").innerHTML +='<li>';
-            {
-                for (let j=0; j<review.stars; ++j)
-                    document.getElementsByClassName("gradient-list").innerHTML += '&#9733 ';
+            console.log(reviews);
+            const num=reviews.length;
+            for (let i=0; i<num; ++i) {
+                console.log("maayan");
+                document.getElementById("reviews").innerHTML += '<li>';
+                for (let j=0; j<reviews[i].stars; ++j)
+                    document.getElementById("reviews").innerHTML += '&#9733 ';
                 
-                document.getElementsByClassName("gradient-list").innerHTML += '<br>';
-                document.getElementsByClassName("gradient-list").innerHTML += reviews[i].text;
-                document.getElementsByClassName("gradient-list").innerHTML +='</li>'
+                document.getElementById("reviews").innerHTML += '<br>';
+                document.getElementById("reviews").innerHTML += reviews[i].text;
+                document.getElementById("reviews").innerHTML +='</li>'
             }
         }
     })
@@ -115,31 +162,62 @@ function getBookReviews() { //maayan
 // function updateReview(){} - note: show "update-review button" only if the user is whom wrote it. Dana
 
 function AllBooksInSystem(){}  {
-    
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    let books = { id: bookId }
+    $.ajax({
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}`,
+        type: 'GET',
+        success: function (books) {
+            const num=books.length;
+            for (let i=0; i<num; ++i)
+            {        
+                $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${books[i].covers[0]}-M.jpg`)        
+                document.getElementById("bookName").innerHTML += books[i].name;
+            }
+        }
+    })
 }
 
  function getUserBooks() { //maayan
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
-    let books = { id: books }
+    let books = { id: bookId }
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
-        data: book,
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}`,
         type: 'GET',
-        success: function (books) {
-            const num=books.length();
+        success: function (res) {
+            console.log(res.books[3]);
+            const num=res.books.length;
             for (let i=0; i<num; ++i)
-            {        
-                $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${books[i].covers[0]}-M.jpg`)        
-                document.getElementById("bookName").innerHTML += books[i].name;
-                document.getElementById("options").innerHTML += '<a href="#" class="tm-more-button tm-more-button-welcome">edit review</a>' +
-                '<a href="#" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
-                '<a href="#" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
+            {   
+                console.log(books[i]);
+            //     $.ajax({
+            //         url: `http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`,
+            //         type: 'GET',
+            //         success: function (res) {
+            //             $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${user.books[i].covers[0]}-M.jpg`)        
+            // }
+            //     })
+                // document.getElementById("bookName").innerHTML += user.books[i];
+                // document.getElementById("options").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
+                // '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
+                // '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
             }
+        
+
+            // $.ajax({
+            //     url: `http://openlibrary.org${res.authors[0].author.key}.json`,
+            //     type: 'GET',
+            //     success: function (res) {
+            //         $('#authors').text(res.name)
+            //     }
+            // })
+            // $('#bookCover').attr('src',`http://covers.openlibrary.org/b/id/${res.covers[0]}-M.jpg`)
         }
+
     })
  }
-
 
 //simulate login:
 function login() {

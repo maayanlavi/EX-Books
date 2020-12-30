@@ -63,31 +63,18 @@
     <div class="tm-main-section light-gray-bg">
       <div class="container" id="main">          
         <section class="tm-section row">
-          <div>            
             <div class="tm-menu-product-content col-lg-9 col-md-9"> 
               <div class="tm-product">
                 <img src="img/menu-1.jpg" alt="Product" id="bookCover">
                 <div class="tm-product-text">
                   <h3 class="tm-product-title" id="bookTitle">Book Name</h3>
                   <h4 class="tm-product-title" id="authors">Author</h4>
-
-                  <button onclick="getBookReviews()" class="tm-more-button tm-more-button-welcome">All reviews:
-                    <div id="reviews"></div>
-                  </button>
-
-                  <ul class="gradient-list">
-                    <!-- <li>&#9733 &#9733 &#9733 &#9733 <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                    <li>&#9733 &#9733 <br> Aenean tincidunt elit at ipsum cursus, vitae interdum nulla suscipit.</li>
-                    <li>&#9733 &#9733 &#9733 <br> Curabitur in orci vel risus facilisis accumsan.</li>
-                    <li>&#9733 &#9733 &#9733 &#9733 &#9733 <br>Morbi eleifend tortor lacinia sapien sagittis, quis pellentesque felis egestas.</li>
-                    <li>&#9733 <br> Aenean viverra dui quis leo lacinia fringilla.</li> -->
-                  </ul>
-
-                </div   >
                   <button onclick="loadAddReviewPage()" class="tm-more-button tm-more-button-welcome">add a review</button>      
-                  <button onclick="addToMyBooks()" class="tm-more-button tm-more-button-welcome">add to My Books</button>      
+                  <button onclick="addToMyBooks()" class="tm-more-button tm-more-button-welcome">add to My Books</button>  
+                  <button onclick="getBookReviews()" class="tm-more-button tm-more-button-welcome">All reviews:</button>
+                </div> 
+                <ul id="reviews" class="gradient-list"></ul>   
               </div>
-            </div>
           </div>          
         </section>
       </div>
