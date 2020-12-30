@@ -114,7 +114,9 @@ function getBookReviews() { //maayan
 
 // function updateReview(){} - note: show "update-review button" only if the user is whom wrote it. Dana
 
-// function AllBooksInSystem(){}  Moriel
+function AllBooksInSystem(){}  {
+    
+}
 
  function getUserBooks() { //maayan
     const urlParams = new URLSearchParams(window.location.search);
