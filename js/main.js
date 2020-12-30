@@ -37,13 +37,14 @@ function showResults() {
 
 function loadAddReviewPage()
 {
+    
     //we use this function to navigate to the 'addReview.html'
     //page and set the query string to contain the book id
     //this way we can read the querystring in javascript code in the function 'addReview()'
     //and make sure the correct book id is sent to the server
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
-    window.location.href = `addReview.html?bookId=${bookId}`
+    window.location.href = `addReview.html?bookId=${bookId}`;
 }
 
 function addReview() {
@@ -59,7 +60,7 @@ function addReview() {
     
 
     $.ajax({
-        url:`http://localhost:3000/api/reviews`,       //chance the path to the heroku after upload it.
+        url:`http://localhost:3000/api/reviews`,       //change the path to the heroku after upload it.
         type: 'POST',
         data:review,
         success: function (review) {
@@ -86,14 +87,56 @@ function addToMyBooks(){
     })
 }
 
-//function getBookReviews()
+function getBookReviews() { //maayan
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    let book = { id: bookId }
+    let theReviews=document.getElementsByClassName("gradient-list");
+    $.ajax({
+        url: `http://localhost:3000/api/reviews?book_id=${bookId}`,
+        data: book,
+        type: 'GET',
+        success: function (reviews) {
+            const num=review.length();
+            for (let i=0; i<num; ++i)
+                document.getElementsByClassName("gradient-list").innerHTML +='<li>';
+            {
+                for (let j=0; j<review.stars; ++j)
+                    document.getElementsByClassName("gradient-list").innerHTML += '&#9733 ';
+                
+                document.getElementsByClassName("gradient-list").innerHTML += '<br>';
+                document.getElementsByClassName("gradient-list").innerHTML += reviews[i].text;
+                document.getElementsByClassName("gradient-list").innerHTML +='</li>'
+            }
+        }
+    })
+}
 
-// function updateReview(){} - note: show "update-review button" only if the user is whom wrote it.
+// function updateReview(){} - note: show "update-review button" only if the user is whom wrote it. Dana
 
+// function AllBooksInSystem(){}  Moriel
 
-// function AllBooksInSystem(){}
-
-// function getUserBooks(){}
+ function getUserBooks() { //maayan
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('bookId');
+    let books = { id: books }
+    $.ajax({
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
+        data: book,
+        type: 'GET',
+        success: function (books) {
+            const num=books.length();
+            for (let i=0; i<num; ++i)
+            {        
+                $('#myBooks').attr('src',`http://covers.openlibrary.org/b/id/${books[i].covers[0]}-M.jpg`)        
+                document.getElementById("bookName").innerHTML += books[i].name;
+                document.getElementById("options").innerHTML += '<a href="#" class="tm-more-button tm-more-button-welcome">edit review</a>' +
+                '<a href="#" class="tm-more-button tm-more-button-welcome">delete review</a>' + 
+                '<a href="#" class="tm-more-button tm-more-button-welcome">delete book</a>'; 
+            }
+        }
+    })
+ }
 
 
 //simulate login:
