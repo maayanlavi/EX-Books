@@ -84,29 +84,23 @@ function addToMyBooks(){
     })
 }
 
-function deleteReview(){    //TODO
-    const urlParams = new URLSearchParams(window.location.search);
-    const bookId = urlParams.get('bookId');
+function deleteReview(reviewId){    //TODO
     $.ajax({
-        //url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`, 
-        //data: book,
+        url: `http://localhost:3000/api/reviews/${reviewId}`,
         type: 'DELETE',
         success: function (res) {
             alert("Deleted Successfully!");
-            window.location.replace('/myBooks.html');
+            window.location.replace('/index.html');
         }
     })
 }
 
-function deleteBook(){  //TODO
-    const urlParams = new URLSearchParams(window.location.search);
-    const bookId = urlParams.get('bookId');
+function deleteBook(bookId){  
     $.ajax({
-        //url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
-        //data: book,
+        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books/${bookId}`,
         type: 'DELETE',
         success: function (res) {
-            console.log(res)
+            alert("book deleted!")
             window.location.replace('/myBooks.html');
         }
     })
@@ -132,7 +126,7 @@ function getBookReviews() {
                 document.getElementById("reviews").innerHTML +='</li>'
                 if (reviews[i].user_id ==  window.localStorage.getItem('user_id'))
                     document.getElementById("reviews").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
-                    '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</button>';
+                    `<button type="button" onclick="deleteReview('${reviews[i]._id}');" class="tm-more-button tm-more-button-welcome">delete review</button>`;
 
             }
         }
@@ -203,8 +197,8 @@ function AllBooksInSystem() {
                 document.getElementById("bookName").innerHTML += '<br>';
 
                 document.getElementById("bookName").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
-                '<button type="button" onclick="deleteReview();" class="tm-more-button tm-more-button-welcome">delete review</button>' + 
-                '<button type="button" onclick="deleteBook();" class="tm-more-button tm-more-button-welcome">delete book</button>'; 
+                `<button type="button" onclick="deleteReview('${books[i].id}');" class="tm-more-button tm-more-button-welcome">delete review</button>` + 
+                `<button type="button" onclick="deleteBook('${books[i].id}');" class="tm-more-button tm-more-button-welcome">delete book</button>`; 
             }
 
         }
