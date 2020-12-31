@@ -47,7 +47,6 @@ function loadAddReviewPage()
 }
 
 function addReview() {
-    //build the body for the request
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
 
@@ -58,7 +57,7 @@ function addReview() {
     }
 
     $.ajax({
-        url:`http://localhost:3000/api/reviews`,       //change the path to the heroku after upload it.
+        url:`https://ex-books.herokuapp.com/api/reviews`, 
         type: 'POST',
         data:review,
         success: function (review) {
@@ -74,7 +73,7 @@ function addToMyBooks(){
     let book = { id: bookId }
     console.log(book)
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
+        url: `https://ex-books.herokuapp.com/api/users/${window.localStorage.getItem('user_id')}/books`,
         data: book,
         type: 'POST',
         success: function (res) {
@@ -84,20 +83,20 @@ function addToMyBooks(){
     })
 }
 
-function deleteReview(reviewId){    //TODO
+function deleteReview(reviewId){    
     $.ajax({
-        url: `http://localhost:3000/api/reviews/${reviewId}`,
+        url: `https://ex-books.herokuapp.com/api/reviews/${reviewId}`,
         type: 'DELETE',
         success: function (res) {
             alert("Deleted Successfully!");
-            window.location.replace('/index.html');
+            window.location.replace('/AllBooks.html');
         }
     })
 }
 
 function deleteBook(bookId){  
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books/${bookId}`,
+        url: `https://ex-books.herokuapp.com/api/users/${window.localStorage.getItem('user_id')}/books/${bookId}`,
         type: 'DELETE',
         success: function (res) {
             alert("book deleted!")
@@ -111,7 +110,7 @@ function getBookReviews() {
     const bookId = urlParams.get('bookId');
 
     $.ajax({
-        url: `http://localhost:3000/api/reviews?book_id=${bookId}`,
+        url: `https://ex-books.herokuapp.com/api/reviews?book_id=${bookId}`,
         type: 'GET',
         success: function (reviews) {
             console.log(reviews);
@@ -125,7 +124,7 @@ function getBookReviews() {
                 document.getElementById("reviews").innerHTML += reviews[i].text;
                 document.getElementById("reviews").innerHTML +='</li>'
                 if (reviews[i].user_id ==  window.localStorage.getItem('user_id'))
-                    document.getElementById("reviews").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
+                    document.getElementById("reviews").innerHTML += `<button type="button" onclick="getReview('${reviews[i]._id}')";" class="tm-more-button tm-more-button-welcome">edit review</a>` +
                     `<button type="button" onclick="deleteReview('${reviews[i]._id}');" class="tm-more-button tm-more-button-welcome">delete review</button>`;
 
             }
@@ -133,9 +132,8 @@ function getBookReviews() {
     })
 }
 
-function updateReview()
+function updateReview(reviewId)
 {
-    //build the body for the request
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
 
@@ -145,15 +143,50 @@ function updateReview()
         text: $('#text').val()
     }
 
+    alert("edited");    
     $.ajax({
-        url:`http://localhost:3000/api/reviews?book_id=${bookId}`,       //change the path to the heroku after upload it.
+        url: `https://ex-books.herokuapp.com/api/reviews/${reviewId}`,
         type: 'PUT',
         data:review,
         success: function (review) {
-            console.log(review);
+            console.log(",aa");
+            console.log("maayan");
             window.location.href=`/book.html?bookId=${bookId}` //return to bookpage after posting review
+
         }
-    });
+    })  
+}
+
+function getReview(reviewId)
+{
+    // window.location.href='updateReview.html';
+    console.log(reviewId);
+
+    $.ajax({
+        url: `https://ex-books.herokuapp.com/api/reviews/${reviewId}`,
+        type: 'GET',
+        success: function (res) {
+            document.getElementById("reviews").innerHTML += `<form action="#" 
+            class="tm-contact-form"><div class="col-lg-6 col-md-6"><div 
+            class="form-group"><input type="number" id="stars" min="1" max="5" class="form-control" 
+            placeholder='${res.stars}' /></div><div class="form-group"><textarea id="text" 
+            class="form-control" rows="6" placeholder='${res.text}'></textarea></div>
+            <div class="form-group"><button class="tm-more-button" onclick="updateReview('${reviewId}')" 
+            type="button" >update</button> </div></div></form>`;
+
+
+            //updateReview(reviewId);
+            //console.log(res);
+
+            //window.location.href='updateReview.html';
+
+            // document.getElementById("stars").innerHTML="maa";
+            // $('#stars').text(res.stars)
+            // $('#text').text(res.text)
+
+        }
+    }) 
+
 }
 
 function AllBooksInSystem() {
@@ -161,7 +194,7 @@ function AllBooksInSystem() {
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
     $.ajax({
-        url: 'http://localhost:3000/api/books',
+        url: 'https://ex-books.herokuapp.com/api/books',
         type: 'GET',
         success: function (books) {
             const num= books.length;
@@ -172,6 +205,7 @@ function AllBooksInSystem() {
                 document.getElementById("bookName").innerHTML += books[i].name;
                 document.getElementById("bookName").innerHTML += '<br>';
                 document.getElementById("bookName").innerHTML += `<a href='${books[i].link}' class="tm-more-button tm-more-button-welcome">Book page</a>`;
+
             }
 
         }
@@ -184,22 +218,35 @@ function AllBooksInSystem() {
     const bookId = urlParams.get('bookId');
     let books = { id: bookId }
     $.ajax({
-        url: `http://localhost:3000/api/users/${window.localStorage.getItem('user_id')}/books`,
+        url: `https://ex-books.herokuapp.com/api/users/${window.localStorage.getItem('user_id')}/books`,
         type: 'GET',
         success: function (books) {
             const num= books.length;
             
             for (let i=0; i<num; ++i)
             {   
-                document.getElementById("bookName").innerHTML += `<img src='${books[i].cover}' alt="Popular" class="tm-popular-item-img">`;
+                document.getElementById("bookName").innerHTML += `<img src='${books[i].cover}' alt="Popular" >`;
                 document.getElementById("bookName").innerHTML += '<br>';
                 document.getElementById("bookName").innerHTML += books[i].name;
                 document.getElementById("bookName").innerHTML += '<br>';
 
-                document.getElementById("bookName").innerHTML += '<button type="button" onclick="updateReview();" class="tm-more-button tm-more-button-welcome">edit review</button>' +
-                `<button type="button" onclick="deleteReview('${books[i].id}');" class="tm-more-button tm-more-button-welcome">delete review</button>` + 
-                `<button type="button" onclick="deleteBook('${books[i].id}');" class="tm-more-button tm-more-button-welcome">delete book</button>`; 
+                document.getElementById("bookName").innerHTML += `<button type="button" onclick="deleteBook('${books[i].id}');" class="tm-more-button tm-more-button-welcome">delete book</button>`; 
             }
+
+        }
+
+    })
+ }
+
+ function getUser() { 
+
+    $.ajax({
+        url: `https://ex-books.herokuapp.com/api/users/${window.localStorage.getItem('user_id')}`,
+        type: 'GET',
+        success: function (user) {
+            document.getElementById("hiUser").innerHTML += user.first_name;
+            document.getElementById("hiUser").innerHTML += " ";
+            document.getElementById("hiUser").innerHTML += user.last_name;
 
         }
 
