@@ -71,14 +71,36 @@ function addToMyBooks(){
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
     let book = { id: bookId }
-    console.log(book)
+    console.log(book);
+    let flag=1;
+    let books = { id: bookId }
     $.ajax({
         url: `https://ex-books.herokuapp.com/api/users/${window.localStorage.getItem('user_id')}/books`,
-        data: book,
-        type: 'POST',
-        success: function (res) {
-            console.log(res)
-            alert("Added Successfully!");
+        type: 'GET',
+        success: function (books) {
+            const num= books.length;
+            console.log(bookId);
+
+            for (let i=0; i<num; ++i) {
+                //console.log(books[i].id);
+               if (books[i].id == bookId) {
+                   flag=2;
+                   alert("this book is already in your list!");
+               }
+            }
+
+            if (flag==1) {
+                $.ajax({
+                    url: `https://ex-books.herokuapp.com/api/users/${window.localStorage.getItem('user_id')}/books`,
+                    data: book,
+                    type: 'POST',
+                    success: function (res) {
+                        console.log(res)
+                        alert("Added Successfully!");
+                    }
+                })
+                
+            }
         }
     })
 }
@@ -89,7 +111,7 @@ function deleteReview(reviewId){
         type: 'DELETE',
         success: function (res) {
             alert("Deleted Successfully!");
-            window.location.replace('/AllBooks.html');
+            window.location.href=`/book.html?bookId=${res.book_id}` //return to bookpage after posting review
         }
     })
 }
@@ -143,14 +165,12 @@ function updateReview(reviewId)
         text: $('#text').val()
     }
 
-    alert("edited");    
+    alert("edited Successfully!");    
     $.ajax({
         url: `https://ex-books.herokuapp.com/api/reviews/${reviewId}`,
         type: 'PUT',
         data:review,
         success: function (review) {
-            console.log(",aa");
-            console.log("maayan");
             window.location.href=`/book.html?bookId=${bookId}` //return to bookpage after posting review
 
         }
@@ -159,7 +179,6 @@ function updateReview(reviewId)
 
 function getReview(reviewId)
 {
-    // window.location.href='updateReview.html';
     console.log(reviewId);
 
     $.ajax({
@@ -173,16 +192,6 @@ function getReview(reviewId)
             class="form-control" rows="6" placeholder='${res.text}'></textarea></div>
             <div class="form-group"><button class="tm-more-button" onclick="updateReview('${reviewId}')" 
             type="button" >update</button> </div></div></form>`;
-
-
-            //updateReview(reviewId);
-            //console.log(res);
-
-            //window.location.href='updateReview.html';
-
-            // document.getElementById("stars").innerHTML="maa";
-            // $('#stars').text(res.stars)
-            // $('#text').text(res.text)
 
         }
     }) 
@@ -224,7 +233,7 @@ function AllBooksInSystem() {
             const num= books.length;
             
             for (let i=0; i<num; ++i)
-            {   
+            {   if (books[i]) {
                 document.getElementById("bookName").innerHTML += `<img src='${books[i].cover}' alt="Popular" >`;
                 document.getElementById("bookName").innerHTML += '<br>';
                 document.getElementById("bookName").innerHTML += books[i].name;
@@ -232,6 +241,8 @@ function AllBooksInSystem() {
 
                 document.getElementById("bookName").innerHTML += `<button type="button" onclick="deleteBook('${books[i].id}');" class="tm-more-button tm-more-button-welcome">delete book</button>`; 
             }
+            }
+        
 
         }
 
