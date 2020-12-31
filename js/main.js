@@ -71,7 +71,6 @@ function addToMyBooks(){
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('bookId');
     let book = { id: bookId }
-    console.log(book);
     let flag=1;
     let books = { id: bookId }
     $.ajax({
@@ -79,10 +78,7 @@ function addToMyBooks(){
         type: 'GET',
         success: function (books) {
             const num= books.length;
-            console.log(bookId);
-
             for (let i=0; i<num; ++i) {
-                //console.log(books[i].id);
                if (books[i].id == bookId) {
                    flag=2;
                    alert("this book is already in your list!");
